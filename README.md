@@ -4,6 +4,25 @@ The example in this repository reuses the example from chapter 10 in [Amanzon We
 
 Use [Swagger UI](http://petstore.swagger.io/?url=https://raw.githubusercontent.com/AWSinAction/apigateway/master/swagger.json) to have a look at the API definition.
 
+## Prep
+
+See https://cloudonaut.io/create-a-serverless-restful-api-with-api-gateway-swagger-lambda-and-dynamodb/
+
+```
+$> conda create -n python_3_6_4_for_release_service python=3.6.4 anaconda
+$> source activate python_3_6_4_for_release_service
+$> pip install awscli --upgrade --user
+export AWS_DEFAULT_REGION=us-west-2
+export S3Bucket=$(whoami)-apigateway
+
+```
+And follow the rest of the directions...
+
+## API
+
+See the Swagger [here](http://petstore.swagger.io/?url=https://raw.githubusercontent.com/briandoconnor/apigateway/master/swagger.json).
+
+
 ## Setup
 
 You have multiple options to setup the example:
