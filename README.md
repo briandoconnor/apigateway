@@ -23,10 +23,20 @@ And follow the rest of the directions...
 See the Swagger [here](http://petstore.swagger.io/?url=https://raw.githubusercontent.com/briandoconnor/apigateway/master/swagger.json).
 
 ## TODO
+* need to review one more time then try a redeployment
+* once releases can be created, need to add bundles+versions to a release post and update tables
 * filtering on releases
 * corresponding lookups in the core DSS API based on release
 * supporting TSV manifest for release creation (not JSON)
 * ability to have extra fields in the manifest
+
+## Testing
+
+```
+export ApiGatewayEndpoint="$ApiId.execute-api.us-west-2.amazonaws.com/v1"
+curl -vvv -X POST -d '{"friendlyname": "v1.1.2", "created": 1}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/release
+# LEFT OFF WITH: not working, try redeploying the whole thing
+```
 
 ## Setup
 

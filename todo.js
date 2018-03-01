@@ -78,6 +78,7 @@ exports.postRelease = function(event, cb) {
       cb(null, {"headers": {"uid": uid}, "body": mapReleaseItem(params.Item)});
     }
   });
+  // TODO: need to make some bundles here
 };
 
 exports.getRelease = function(event, cb) {
