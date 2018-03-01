@@ -1,0 +1,327 @@
+var moment = require('moment');
+var uuid = require('node-uuid');
+var AWS = require('aws-sdk');
+var db = new AWS.DynamoDB();
+
+function getValue(attribute, type) {
+  if (attribute === undefined) {
+    return null;
+  }
+  return attribute[type];
+}
+
+function mapBundleItem(item) {
+  return {
+    "bid": item.bid.N,
+    "version": item.version.N
+  };
+}
+
+function mapReleaseItem(item) {
+  return {
+    "uid": item.uid.S,
+    "friendlyname": item.friendlyname.S,
+    "created": item.created.N
+  };
+}
+
+exports.getReleases = function(event, cb) {
+  console.log("getReleases", JSON.stringify(event));
+  var params = {
+    "TableName": "todo-release",
+    "Limit": event.parameters.limit || 10
+  };
+  if (event.parameters.next) {
+    params.ExclusiveStartKey = {
+      "uid": {
+        "S": event.parameters.next
+      }
+    };
+  }
+  db.scan(params, function(err, data) {
+    if (err) {
+      cb(err);
+    } else {
+      var res = {
+        "body": data.Items.map(mapReleaseItem)
+      };
+      if (data.LastEvaluatedKey !== undefined) {
+        res.headers = {"next": data.LastEvaluatedKey.uid.S};
+      }
+      cb(null, res);
+    }
+  });
+};
+
+exports.postRelease = function(event, cb) {
+  console.log("postRelease", JSON.stringify(event));
+  var uid = uuid.v4();
+  var params = {
+    "Item": {
+      "uid": {
+        "S": uid
+      },
+      "friendlyname": {
+        "S": event.body.friendlyname
+      },
+      "created": {
+        "N": moment().format("YYYYMMDD")
+      }
+    },
+    "TableName": "todo-release",
+    "ConditionExpression": "attribute_not_exists(uid)"
+  };
+  db.putItem(params, function(err) {
+    if (err) {
+      cb(err);
+    } else {
+      cb(null, {"headers": {"uid": uid}, "body": mapReleaseItem(params.Item)});
+    }
+  });
+};
+
+exports.getRelease = function(event, cb) {
+  console.log("getRelease", JSON.stringify(event));
+  var params = {
+    "Key": {
+      "uid": {
+        "S": event.parameters.releaseId
+      }
+    },
+    "TableName": "todo-release"
+  };
+  db.getItem(params, function(err, data) {
+    if (err) {
+      cb(err);
+    } else {
+      if (data.Item) {
+        cb(null, {"body": mapReleaseItem(data.Item)});
+      } else {
+        cb(new Error('not found'));
+      }
+    }
+  });
+};
+
+exports.deleteRelease = function(event, cb) {
+  console.log("deleteRelease", JSON.stringify(event));
+  var params = {
+    "Key": {
+      "uid": {
+        "S": event.parameters.releaseId
+      }
+    },
+    "TableName": "todo-release"
+  };
+  db.deleteItem(params, function(err) {
+    if (err) {
+      cb(err);
+    } else {
+      cb();
+    }
+  });
+};
+
+exports.postBundle = function(event, cb) {
+  console.log("postBundle", JSON.stringify(event));
+  var tid = Date.now();
+  var params = {
+    "Item": {
+      "uid": {
+        "S": event.parameters.releaseId
+      },
+      "tid": {
+        "N": tid.toString()
+      },
+      "description": {
+        "S": event.body.description
+      },
+      "created": {
+        "N": moment().format("YYYYMMDD")
+      }
+    },
+    "TableName": "todo-bundle",
+    "ConditionExpression": "attribute_not_exists(uid) and attribute_not_exists(tid)"
+  };
+  if (event.body.dueat) {
+    params.Item.due = {
+      "N": event.body.dueat
+    };
+  }
+  if (event.body.category) {
+    params.Item.category = {
+      "S": event.body.category
+    };
+  }
+  db.putItem(params, function(err) {
+    if (err) {
+      cb(err);
+    } else {
+      cb(null, {"headers": {"uid": event.parameters.releaseId, "tid": tid}, "body": mapBundleItem(params.Item)});
+    }
+  });
+};
+
+exports.getBundles = function(event, cb) {
+  console.log("getBundles", JSON.stringify(event));
+  var params = {
+    "KeyConditionExpression": "uid = :uid",
+    "ExpressionAttributeValues": {
+      ":uid": {
+        "S": event.parameters.releaseId
+      }
+    },
+    "TableName": "todo-bundle",
+    "Limit": event.parameters.limit || 10
+  };
+  if (event.parameters.next) {
+    params.KeyConditionExpression += ' AND tid > :next';
+    params.ExpressionAttributeValues[':next'] = {
+      "N": event.parameters.next
+    };
+  }
+  if (event.parameters.overdue) {
+    params.FilterExpression = "due < :yyyymmdd";
+    params.ExpressionAttributeValues[':yyyymmdd'] = {"N": moment().format("YYYYMMDD")};
+  } else if (event.parameters.due) {
+    params.FilterExpression = "due = :yyyymmdd";
+    params.ExpressionAttributeValues[':yyyymmdd'] = {"N": moment().format("YYYYMMDD")};
+  } else if (event.parameters.withoutdue) {
+    params.FilterExpression = "attribute_not_exists(due)";
+  } else if (event.parameters.futuredue) {
+    params.FilterExpression = "due > :yyyymmdd";
+    params.ExpressionAttributeValues[':yyyymmdd'] = {"N": moment().format("YYYYMMDD")};
+  } else if (event.parameters.dueafter) {
+    params.FilterExpression = "due > :yyyymmdd";
+    params.ExpressionAttributeValues[':yyyymmdd'] = {"N": event.parameters.dueafter};
+  } else if (event.parameters.duebefore) {
+    params.FilterExpression = "due < :yyyymmdd";
+    params.ExpressionAttributeValues[':yyyymmdd'] = {"N": event.parameters.duebefore};
+  }
+  if (event.parameters.category) {
+    if (params.FilterExpression === undefined) {
+      params.FilterExpression = '';
+    } else {
+      params.FilterExpression += ' AND ';
+    }
+    params.FilterExpression += 'category = :category';
+    params.ExpressionAttributeValues[':category'] = {
+      "S": event.parameters.category
+    };
+  }
+  db.query(params, function(err, data) {
+    if (err) {
+      cb(err);
+    } else {
+      var res = {
+        "body": data.Items.map(mapBundleItem)
+      };
+      if (data.LastEvaluatedKey !== undefined) {
+        res.headers = {"next": data.LastEvaluatedKey.tid.N};
+      }
+      cb(null, res);
+    }
+  });
+};
+
+exports.deleteBundle = function(event, cb) {
+  console.log("deleteBundle", JSON.stringify(event));
+  var params = {
+    "Key": {
+      "uid": {
+        "S": event.parameters.releaseId
+      },
+      "tid": {
+        "N": event.parameters.bundleId
+      }
+    },
+    "TableName": "todo-bundle"
+  };
+  db.deleteItem(params, function(err) {
+    if (err) {
+      cb(err);
+    } else {
+      cb();
+    }
+  });
+};
+
+exports.putBundle = function(event, cb) {
+  console.log("putBundle", JSON.stringify(event));
+  var params = {
+    "Key": {
+      "uid": {
+        "S": event.parameters.releaseId
+      },
+      "tid": {
+        "N": event.parameters.bundleId
+      }
+    },
+    "UpdateExpression": "SET completed = :yyyymmdd",
+    "ExpressionAttributeValues": {
+      ":yyyymmdd": {
+        "N": moment().format("YYYYMMDD")
+      }
+    },
+    "TableName": "todo-bundle"
+  };
+  db.updateItem(params, function(err) {
+    if (err) {
+      cb(err);
+    } else {
+      cb();
+    }
+  });
+};
+
+exports.getBundlesByCategory = function(event, cb) {
+  console.log("getBundlesByCategory", JSON.stringify(event));
+  var params = {
+    "KeyConditionExpression": "category = :category",
+    "ExpressionAttributeValues": {
+      ":category": {
+        "S": event.parameters.category
+      }
+    },
+    "TableName": "todo-bundle",
+    "IndexName": "category-index",
+    "Limit": event.parameters.limit || 10
+  };
+  if (event.parameters.next) {
+    params.KeyConditionExpression += ' AND tid > :next';
+    params.ExpressionAttributeValues[':next'] = {
+      "N": event.parameters.next
+    };
+  }
+  if (event.parameters.overdue) {
+    params.FilterExpression = "due < :yyyymmdd";
+    params.ExpressionAttributeValues[':yyyymmdd'] = {"N": moment().format("YYYYMMDD")};
+  } else if (event.parameters.due) {
+    params.FilterExpression = "due = :yyyymmdd";
+    params.ExpressionAttributeValues[':yyyymmdd'] = {"N": moment().format("YYYYMMDD")};
+  } else if (event.parameters.withoutdue) {
+    params.FilterExpression = "attribute_not_exists(due)";
+  } else if (event.parameters.futuredue) {
+    params.FilterExpression = "due > :yyyymmdd";
+    params.ExpressionAttributeValues[':yyyymmdd'] = {"N": moment().format("YYYYMMDD")};
+  } else if (event.parameters.dueafter) {
+    params.FilterExpression = "due > :yyyymmdd";
+    params.ExpressionAttributeValues[':yyyymmdd'] = {"N": event.parameters.dueafter};
+  } else if (event.parameters.duebefore) {
+    params.FilterExpression = "due < :yyyymmdd";
+    params.ExpressionAttributeValues[':yyyymmdd'] = {"N": event.parameters.duebefore};
+  }
+  db.query(params, function(err, data) {
+    if (err) {
+      cb(err);
+    } else {
+      var res = {
+        "body": data.Items.map(mapBundleItem)
+      };
+      if (data.LastEvaluatedKey !== undefined) {
+        res.headers = {"next": data.LastEvaluatedKey.tid.N};
+      }
+      cb(null, res);
+    }
+  });
+};

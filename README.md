@@ -22,6 +22,11 @@ And follow the rest of the directions...
 
 See the Swagger [here](http://petstore.swagger.io/?url=https://raw.githubusercontent.com/briandoconnor/apigateway/master/swagger.json).
 
+## TODO
+* filtering on releases
+* corresponding lookups in the core DSS API based on release
+* supporting TSV manifest for release creation (not JSON)
+* ability to have extra fields in the manifest
 
 ## Setup
 
