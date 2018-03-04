@@ -25,10 +25,10 @@ function mapReleaseItem(item) {
   };
 }
 
-exports.getReleases = function(event, cb) {
-  console.log("getReleases", JSON.stringify(event));
+exports.getCollections = function(event, cb) {
+  console.log("getCollections", JSON.stringify(event));
   var params = {
-    "TableName": "todo-release",
+    "TableName": "collection-collection",
     "Limit": event.parameters.limit || 10
   };
   if (event.parameters.next) {
@@ -53,8 +53,8 @@ exports.getReleases = function(event, cb) {
   });
 };
 
-exports.postRelease = function(event, cb) {
-  console.log("postRelease", JSON.stringify(event));
+exports.postCollection = function(event, cb) {
+  console.log("postCollection", JSON.stringify(event));
   var uid = uuid.v4();
   var params = {
     "Item": {
@@ -68,7 +68,7 @@ exports.postRelease = function(event, cb) {
         "N": moment().format("YYYYMMDD")
       }
     },
-    "TableName": "todo-release",
+    "TableName": "collection-collection",
     "ConditionExpression": "attribute_not_exists(uid)"
   };
   db.putItem(params, function(err) {
@@ -81,15 +81,15 @@ exports.postRelease = function(event, cb) {
   // TODO: need to make some bundles here
 };
 
-exports.getRelease = function(event, cb) {
-  console.log("getRelease", JSON.stringify(event));
+exports.getCollection = function(event, cb) {
+  console.log("getCollection", JSON.stringify(event));
   var params = {
     "Key": {
       "uid": {
         "S": event.parameters.releaseId
       }
     },
-    "TableName": "todo-release"
+    "TableName": "collection-collection"
   };
   db.getItem(params, function(err, data) {
     if (err) {
@@ -112,7 +112,7 @@ exports.deleteRelease = function(event, cb) {
         "S": event.parameters.releaseId
       }
     },
-    "TableName": "todo-release"
+    "TableName": "collection-collection"
   };
   db.deleteItem(params, function(err) {
     if (err) {
@@ -123,8 +123,8 @@ exports.deleteRelease = function(event, cb) {
   });
 };
 
-exports.getBundles = function(event, cb) {
-  console.log("getBundles", JSON.stringify(event));
+exports.getEntities = function(event, cb) {
+  console.log("getEntities", JSON.stringify(event));
   var params = {
     "KeyConditionExpression": "uid = :uid",
     "ExpressionAttributeValues": {
@@ -132,7 +132,7 @@ exports.getBundles = function(event, cb) {
         "S": event.parameters.releaseId
       }
     },
-    "TableName": "todo-bundle",
+    "TableName": "collection-entity",
     "Limit": event.parameters.limit || 10
   };
   if (event.parameters.next) {

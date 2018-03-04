@@ -1,23 +1,23 @@
 {
   "swagger": "2.0",
   "info": {
-    "title": "Release Service",
+    "title": "Collections Service",
     "version": "1.0.0"
   },
-  "basePath": "/dss/rs/v1",
+  "basePath": "/collections/v1",
   "schemes": ["https"],
   "consumes": ["application/json"],
   "produces": ["application/json"],
   "paths": {
-    "/release": {
+    "/collection": {
       "get": {
         "responses": {
           "200": {
-            "description": "releases retrieved",
+            "description": "collections retrieved",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Release"
+                "$ref": "#/definitions/Collection"
               }
             },
             "headers": {
@@ -42,10 +42,10 @@
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1IGHI7QDRL817/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1M22KUQIHFLVG/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
-            "application/json": "{\"fun\": \"getReleases\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
+            "application/json": "{\"fun\": \"getCollections\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
           },
           "responses": {
             "default": {
@@ -63,10 +63,10 @@
       "post": {
         "responses": {
           "201": {
-            "description": "release created",
+            "description": "collection created",
             "headers": {
               "Location": {
-                "description": "links to the newly created release",
+                "description": "links to the newly created collection",
                 "type": "string"
               }
             }
@@ -78,15 +78,15 @@
           "description": "body object",
           "required": true,
           "schema": {
-            "$ref":"#/definitions/CreateRelease"
+            "$ref":"#/definitions/CreateCollection"
           }
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1IGHI7QDRL817/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1M22KUQIHFLVG/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
-            "application/json": "{\"fun\": \"postRelease\", \"body\": $input.json('$')}"
+            "application/json": "{\"fun\": \"postCollection\", \"body\": $input.json('$')}"
           },
           "responses": {
             "default": {
@@ -102,11 +102,11 @@
         }
       }
     },
-    "/release/{releaseId}": {
+    "/collection/{collectionId}": {
       "parameters": [{
-        "name": "releaseId",
+        "name": "collectionId",
         "in": "path",
-        "description": "ID of release",
+        "description": "ID of collection",
         "required": true,
         "default": "",
         "type": "string"
@@ -114,18 +114,18 @@
       "get": {
         "responses": {
           "200": {
-            "description": "release retrieved",
+            "description": "collection retrieved",
             "schema": {
-              "$ref": "#/definitions/Release"
+              "$ref": "#/definitions/Collection"
             }
           }
         },
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1IGHI7QDRL817/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1M22KUQIHFLVG/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
-            "application/json": "{\"fun\": \"getRelease\", \"parameters\": {\"releaseId\": \"$input.params('releaseId')\"}}"
+            "application/json": "{\"fun\": \"getCollection\", \"parameters\": {\"collectionId\": \"$input.params('collectionId')\"}}"
           },
           "responses": {
             "default": {
@@ -140,15 +140,15 @@
       "delete": {
         "responses": {
           "204": {
-            "description": "release deleted"
+            "description": "collection deleted"
           }
         },
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1IGHI7QDRL817/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1M22KUQIHFLVG/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
-            "application/json": "{\"fun\": \"deleteRelease\", \"parameters\": {\"releaseId\": \"$input.params('releaseId')\"}}"
+            "application/json": "{\"fun\": \"deleteCollection\", \"parameters\": {\"collectionId\": \"$input.params('collectionId')\"}}"
           },
           "responses": {
             "default": {
@@ -161,11 +161,11 @@
         }
       }
     },
-    "/release/{releaseId}/bundle": {
+    "/collection/{collectionId}/entities": {
       "parameters": [{
-        "name": "releaseId",
+        "name": "collectionId",
         "in": "path",
-        "description": "ID of release",
+        "description": "ID of collection",
         "required": true,
         "default": "",
         "type": "string"
@@ -173,11 +173,11 @@
       "get": {
         "responses": {
           "200": {
-            "description": "bundles retrieved",
+            "description": "entities retrieved",
             "schema": {
               "type": "array",
               "items": {
-                "$ref": "#/definitions/Bundle"
+                "$ref": "#/definitions/Entity"
               }
             },
             "headers": {
@@ -202,10 +202,10 @@
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1IGHI7QDRL817/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1M22KUQIHFLVG/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
-            "application/json": "{\"fun\": \"getBundles\", \"parameters\": {\"releaseId\": \"$input.params('releaseId')\", \"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
+            "application/json": "{\"fun\": \"getEntities\", \"parameters\": {\"collectionId\": \"$input.params('collectionId')\", \"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
           },
           "responses": {
             "default": {
@@ -223,7 +223,7 @@
     }
   },
   "definitions": {
-    "Bundle": {
+    "Entity": {
       "type": "object",
       "properties": {
         "bid": {
@@ -235,7 +235,7 @@
       },
       "required": ["bid", "version"]
     },
-    "Release": {
+    "Collection": {
       "type": "object",
       "properties": {
         "uid": {
@@ -250,7 +250,7 @@
       },
       "required": ["uid", "friendlyname", "created"]
     },
-    "CreateRelease": {
+    "CreateCollection": {
       "type": "object",
       "properties": {
         "friendlyname": {
