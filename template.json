@@ -39,6 +39,24 @@
         "TableName": "collection-collection"
       }
     },
+    "CartTable": {
+      "Type": "AWS::DynamoDB::Table",
+      "Properties": {
+        "AttributeDefinitions": [{
+          "AttributeName": "uid",
+          "AttributeType": "S"
+        }],
+        "KeySchema": [{
+          "AttributeName": "uid",
+          "KeyType": "HASH"
+        }],
+        "ProvisionedThroughput": {
+          "ReadCapacityUnits": 1,
+          "WriteCapacityUnits": 1
+        },
+        "TableName": "collection-cart"
+      }
+    },
     "TaskTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {

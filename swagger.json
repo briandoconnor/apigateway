@@ -220,6 +220,138 @@
           }
         }
       }
+    },
+    "/cart": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "shopping cart retrieved",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Entity"
+              }
+            },
+            "headers": {
+              "Link":  {
+                "description": "contains the link to the next page",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "parameters": [{
+          "name": "limit",
+          "in": "query",
+          "description": "result limit",
+          "default": "10",
+          "type": "integer"
+        }, {
+          "name": "next",
+          "in": "query",
+          "description": "use the Link header to get the next page",
+          "type": "string"
+        }, {
+          "name": "entitytype",
+          "in": "query",
+          "description": "filter the cart contents by this type",
+          "type": "string"
+        }],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1M22KUQIHFLVG/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"getCart\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\", \"entitytype\": \"$input.params('entitytype')\"}}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Link": "'TODO'"
+              },
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart/entity": {
+      "post": {
+        "responses": {
+          "201": {
+            "description": "cart entity created",
+            "headers": {
+              "Location": {
+                "description": "links to the newly created cart entity",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "parameters": [{
+          "name": "body",
+          "in": "body",
+          "description": "body object",
+          "required": true,
+          "schema": {
+            "$ref":"#/definitions/CreateCartEntity"
+          }
+        }],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1M22KUQIHFLVG/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"postCartEntity\", \"body\": $input.json('$')}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "201",
+              "responseParameters": {
+                "method.response.header.Location": "'TODO'"
+              },
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')"
+              }
+            }
+          }
+        }
+      }
+    },"/cart/entity/{entityId}": {
+      "parameters": [{
+        "name": "entityId",
+        "in": "path",
+        "description": "ID of entity in the cart",
+        "required": true,
+        "default": "",
+        "type": "string"
+      }],
+      "delete": {
+        "responses": {
+          "204": {
+            "description": "cart entity deleted"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1M22KUQIHFLVG/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"deleteCartEntity\", \"parameters\": {\"entityId\": \"$input.params('entityId')\"}}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "204",
+              "responseTemplates": {
+                "application/json": "{}"
+              }
+            }
+          }
+        }
+      }
     }
   },
   "definitions": {
@@ -261,6 +393,21 @@
         }
       },
       "required": ["friendlyname", "created"]
+    },
+    "CreateCartEntity": {
+      "type": "object",
+      "properties": {
+        "entitytype": {
+          "type": "string"
+        },
+        "eid": {
+          "type": "string"
+        },
+        "created": {
+          "type": "integer"
+        }
+      },
+      "required": ["entitytype", "eid", "created"]
     }
   }
 }
