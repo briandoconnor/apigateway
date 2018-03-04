@@ -1,4 +1,5 @@
 {
-  "UserTable": "todo-release",
-  "TaskTable": "todo-bundle"
+  "CollectionTable": "collection-collection",
+  "EntityTable": "collection-entity",
+  "CartEntitiesTable": "collection-cart-entities"
 }

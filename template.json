@@ -21,7 +21,7 @@
     "ApiGatewayDeployed": {"Fn::Not": [{"Fn::Equals": ["", {"Ref": "ApiId"}]}]}
   },
   "Resources": {
-    "UserTable": {
+    "CollectionTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
         "AttributeDefinitions": [{
@@ -39,51 +39,83 @@
         "TableName": "collection-collection"
       }
     },
-    "CartTable": {
+    "CartEntitiesTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
         "AttributeDefinitions": [{
-          "AttributeName": "uid",
+          "AttributeName": "eid",
+          "AttributeType": "N"
+        }, {
+          "AttributeName": "identity",
+          "AttributeType": "S"
+        }, {
+          "AttributeName": "entitytype",
           "AttributeType": "S"
         }],
         "KeySchema": [{
-          "AttributeName": "uid",
-          "KeyType": "HASH"
+          "AttributeName": "eid",
+          "KeyType": "RANGE"
+        }],
+        "GlobalSecondaryIndexes": [{
+          "IndexName": "identity-index",
+          "KeySchema": [{
+            "AttributeName": "identity",
+            "KeyType": "HASH"
+          },{
+            "AttributeName": "entitytype",
+            "KeyType": "HASH"
+          }, {
+            "AttributeName": "eid",
+            "KeyType": "RANGE"
+          }],
+          "Projection": {
+            "ProjectionType": "ALL"
+          },
+          "ProvisionedThroughput": {
+            "ReadCapacityUnits": 1,
+            "WriteCapacityUnits": 1
+          }
         }],
         "ProvisionedThroughput": {
           "ReadCapacityUnits": 1,
           "WriteCapacityUnits": 1
         },
-        "TableName": "collection-cart"
+        "TableName": "collection-cart-entities"
       }
     },
-    "TaskTable": {
+    "EntityTable": {
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
         "AttributeDefinitions": [{
           "AttributeName": "uid",
           "AttributeType": "S"
         }, {
-          "AttributeName": "bid",
+          "AttributeName": "eid",
           "AttributeType": "N"
         }, {
-          "AttributeName": "version",
-          "AttributeType": "N"
+          "AttributeName": "identity",
+          "AttributeType": "S"
+        }, {
+          "AttributeName": "entitytype",
+          "AttributeType": "S"
         }],
         "KeySchema": [{
           "AttributeName": "uid",
           "KeyType": "HASH"
         }, {
-          "AttributeName": "bid",
+          "AttributeName": "eid",
           "KeyType": "RANGE"
         }],
         "GlobalSecondaryIndexes": [{
-          "IndexName": "version-index",
+          "IndexName": "identity-index",
           "KeySchema": [{
-            "AttributeName": "version",
+            "AttributeName": "identity",
+            "KeyType": "HASH"
+          },{
+            "AttributeName": "entitytype",
             "KeyType": "HASH"
           }, {
-            "AttributeName": "bid",
+            "AttributeName": "eid",
             "KeyType": "RANGE"
           }],
           "Projection": {
@@ -137,7 +169,8 @@
               "Action": ["dynamodb:Scan", "dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:DeleteItem", "dynamodb:Query", "dynamodb:UpdateItem"],
               "Resource": [
                 {"Fn::Join" : ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/collection-collection*"]]},
-                {"Fn::Join" : ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/collection-entity*"]]}
+                {"Fn::Join" : ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/collection-entity*"]]},
+                {"Fn::Join" : ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/collection-cart-entities*"]]}
               ]
             }]
           }
