@@ -42,7 +42,7 @@
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway2-Lambda-1WMK3O4PN7TCF/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1IGHI7QDRL817/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"getReleases\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
@@ -83,7 +83,7 @@
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway2-Lambda-1WMK3O4PN7TCF/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1IGHI7QDRL817/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"postRelease\", \"body\": $input.json('$')}"
@@ -122,7 +122,7 @@
         },
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway2-Lambda-1WMK3O4PN7TCF/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1IGHI7QDRL817/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"getRelease\", \"parameters\": {\"releaseId\": \"$input.params('releaseId')\"}}"
@@ -145,7 +145,7 @@
         },
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway2-Lambda-1WMK3O4PN7TCF/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1IGHI7QDRL817/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"deleteRelease\", \"parameters\": {\"releaseId\": \"$input.params('releaseId')\"}}"
@@ -202,7 +202,7 @@
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway2-Lambda-1WMK3O4PN7TCF/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1IGHI7QDRL817/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"getBundles\", \"parameters\": {\"releaseId\": \"$input.params('releaseId')\", \"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"

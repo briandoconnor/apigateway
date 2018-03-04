@@ -36,7 +36,7 @@
           "ReadCapacityUnits": 1,
           "WriteCapacityUnits": 1
         },
-        "TableName": "todo-user"
+        "TableName": "todo-release"
       }
     },
     "TaskTable": {
@@ -46,26 +46,26 @@
           "AttributeName": "uid",
           "AttributeType": "S"
         }, {
-          "AttributeName": "tid",
+          "AttributeName": "bid",
           "AttributeType": "N"
         }, {
-          "AttributeName": "category",
-          "AttributeType": "S"
+          "AttributeName": "version",
+          "AttributeType": "N"
         }],
         "KeySchema": [{
           "AttributeName": "uid",
           "KeyType": "HASH"
         }, {
-          "AttributeName": "tid",
+          "AttributeName": "bid",
           "KeyType": "RANGE"
         }],
         "GlobalSecondaryIndexes": [{
-          "IndexName": "category-index",
+          "IndexName": "version-index",
           "KeySchema": [{
-            "AttributeName": "category",
+            "AttributeName": "version",
             "KeyType": "HASH"
           }, {
-            "AttributeName": "tid",
+            "AttributeName": "bid",
             "KeyType": "RANGE"
           }],
           "Projection": {
@@ -80,7 +80,7 @@
           "ReadCapacityUnits": 1,
           "WriteCapacityUnits": 1
         },
-        "TableName": "todo-task"
+        "TableName": "todo-bundle"
       }
     },
     "LambdaRole": {
@@ -118,8 +118,8 @@
               "Effect": "Allow",
               "Action": ["dynamodb:Scan", "dynamodb:PutItem", "dynamodb:GetItem", "dynamodb:DeleteItem", "dynamodb:Query", "dynamodb:UpdateItem"],
               "Resource": [
-                {"Fn::Join" : ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/todo-user*"]]},
-                {"Fn::Join" : ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/todo-task*"]]}
+                {"Fn::Join" : ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/todo-release*"]]},
+                {"Fn::Join" : ["", ["arn:aws:dynamodb:", {"Ref": "AWS::Region"}, ":", {"Ref": "AWS::AccountId"}, ":table/todo-bundle*"]]}
               ]
             }]
           }

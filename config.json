@@ -1,4 +1,4 @@
 {
-  "UserTable": "todo-user",
-  "TaskTable": "todo-task"
+  "UserTable": "todo-release",
+  "TaskTable": "todo-bundle"
 }
