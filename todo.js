@@ -195,6 +195,7 @@ exports.getCartEntities = function(event, cb) {
 exports.postCartEntities = function(event, cb) {
   console.log("postCartEntities", JSON.stringify(event));
   var tid = Date.now();
+  var uid = uuid.v4();
   //for (let item of event.body.) {
   //console.log(item);
   //}
@@ -217,7 +218,7 @@ exports.postCartEntities = function(event, cb) {
     if (err) {
       cb(err);
     } else {
-      cb(null, {"headers": {"eid": tid}, "body": mapEntityItem(params.Item)});
+      cb(null, {"headers": {"uid": uid}, "body": mapEntityItem(params.Item)});
     }
   });
 };

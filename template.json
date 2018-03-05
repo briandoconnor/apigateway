@@ -43,6 +43,9 @@
       "Type": "AWS::DynamoDB::Table",
       "Properties": {
         "AttributeDefinitions": [{
+          "AttributeName": "uid",
+          "AttributeType": "S"
+        },{
           "AttributeName": "eid",
           "AttributeType": "N"
         }, {
@@ -50,9 +53,9 @@
           "AttributeType": "S"
         }],
         "KeySchema": [{
-          "AttributeName": "entitytype",
+          "AttributeName": "uid",
           "KeyType": "HASH"
-        }, 
+        },
           {
           "AttributeName": "eid",
           "KeyType": "RANGE"
