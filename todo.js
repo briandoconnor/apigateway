@@ -10,14 +10,15 @@ function getValue(attribute, type) {
   return attribute[type];
 }
 
-function mapBundleItem(item) {
+function mapEntityItem(item) {
   return {
-    "bid": item.bid.N,
-    "version": item.version.N
+    "eid": item.eid.N,
+    "identity": item.identity.S,
+    "entitytype": item.entitytype.S
   };
 }
 
-function mapReleaseItem(item) {
+function mapCollectionItem(item) {
   return {
     "uid": item.uid.S,
     "friendlyname": item.friendlyname.S,
@@ -43,7 +44,7 @@ exports.getCollections = function(event, cb) {
       cb(err);
     } else {
       var res = {
-        "body": data.Items.map(mapReleaseItem)
+        "body": data.Items.map(mapCollectionItem)
       };
       if (data.LastEvaluatedKey !== undefined) {
         res.headers = {"next": data.LastEvaluatedKey.uid.S};
@@ -75,7 +76,7 @@ exports.postCollection = function(event, cb) {
     if (err) {
       cb(err);
     } else {
-      cb(null, {"headers": {"uid": uid}, "body": mapReleaseItem(params.Item)});
+      cb(null, {"headers": {"uid": uid}, "body": mapCollectionItem(params.Item)});
     }
   });
   // TODO: need to make some bundles here
@@ -96,7 +97,7 @@ exports.getCollection = function(event, cb) {
       cb(err);
     } else {
       if (data.Item) {
-        cb(null, {"body": mapReleaseItem(data.Item)});
+        cb(null, {"body": mapCollectionItem(data.Item)});
       } else {
         cb(new Error('not found'));
       }
@@ -104,8 +105,8 @@ exports.getCollection = function(event, cb) {
   });
 };
 
-exports.deleteRelease = function(event, cb) {
-  console.log("deleteRelease", JSON.stringify(event));
+exports.deleteCollection = function(event, cb) {
+  console.log("deleteCollection", JSON.stringify(event));
   var params = {
     "Key": {
       "uid": {
@@ -136,7 +137,7 @@ exports.getEntities = function(event, cb) {
     "Limit": event.parameters.limit || 10
   };
   if (event.parameters.next) {
-    params.KeyConditionExpression += ' AND bid > :next';
+    params.KeyConditionExpression += ' AND eid > :next';
     params.ExpressionAttributeValues[':next'] = {
       "N": event.parameters.next
     };
@@ -147,12 +148,76 @@ exports.getEntities = function(event, cb) {
       cb(err);
     } else {
       var res = {
-        "body": data.Items.map(mapBundleItem)
+        "body": data.Items.map(mapEntityItem)
       };
       if (data.LastEvaluatedKey !== undefined) {
-        res.headers = {"next": data.LastEvaluatedKey.bid.N};
+        res.headers = {"next": data.LastEvaluatedKey.eid.N};
       }
       cb(null, res);
+    }
+  });
+};
+
+exports.getCartEntities = function(event, cb) {
+  console.log("getCartEntities", JSON.stringify(event));
+  var params = {
+    "KeyConditionExpression": "entitytype = :entitytype",
+    "ExpressionAttributeValues": {
+      ":entitytype": {
+        "S": event.parameters.entitytype
+      }
+    },
+    "TableName": "collection-cart-entities",
+    "Limit": event.parameters.limit || 10
+  };
+  if (event.parameters.next) {
+    params.KeyConditionExpression += ' AND eid > :next';
+    params.ExpressionAttributeValues[':next'] = {
+      "N": event.parameters.next
+    };
+  }
+
+  db.query(params, function(err, data) {
+    if (err) {
+      cb(err);
+    } else {
+      var res = {
+        "body": data.Items.map(mapEntityItem)
+      };
+      if (data.LastEvaluatedKey !== undefined) {
+        res.headers = {"next": data.LastEvaluatedKey.eid.N};
+      }
+      cb(null, res);
+    }
+  });
+};
+
+exports.postCartEntities = function(event, cb) {
+  console.log("postCartEntities", JSON.stringify(event));
+  var tid = Date.now();
+  //for (let item of event.body.) {
+  //console.log(item);
+  //}
+  var params = {
+    "Item": {
+      "eid": {
+        "N": tid
+      },
+      "identity": {
+        "S": event.body.identity
+      },
+      "entitytype": {
+        "S": event.body.entitytype
+      }
+    },
+    "TableName": "collection-cart-entities",
+    "ConditionExpression": "attribute_not_exists(eid)"
+  };
+  db.putItem(params, function(err) {
+    if (err) {
+      cb(err);
+    } else {
+      cb(null, {"headers": {"eid": tid}, "body": mapEntityItem(params.Item)});
     }
   });
 };

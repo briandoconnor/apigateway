@@ -35,6 +35,7 @@ See the Swagger [here](http://petstore.swagger.io/?url=https://raw.githubusercon
 ```
 export ApiGatewayEndpoint="$ApiId.execute-api.us-west-2.amazonaws.com/v1"
 curl -vvv -X POST -d '{"friendlyname": "v1.1.2", "created": 1}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/collection
+curl -vvv -X POST -d '{"entitytype": "project", "eid": 1, "identity": "Foo"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/cart/entity
 # LEFT OFF WITH: not working, try redeploying the whole thing
 ```
 

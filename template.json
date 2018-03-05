@@ -46,22 +46,20 @@
           "AttributeName": "eid",
           "AttributeType": "N"
         }, {
-          "AttributeName": "identity",
-          "AttributeType": "S"
-        }, {
           "AttributeName": "entitytype",
           "AttributeType": "S"
         }],
         "KeySchema": [{
+          "AttributeName": "entitytype",
+          "KeyType": "HASH"
+        }, 
+          {
           "AttributeName": "eid",
           "KeyType": "RANGE"
         }],
         "GlobalSecondaryIndexes": [{
           "IndexName": "identity-index",
           "KeySchema": [{
-            "AttributeName": "identity",
-            "KeyType": "HASH"
-          },{
             "AttributeName": "entitytype",
             "KeyType": "HASH"
           }, {
@@ -93,9 +91,6 @@
           "AttributeName": "eid",
           "AttributeType": "N"
         }, {
-          "AttributeName": "identity",
-          "AttributeType": "S"
-        }, {
           "AttributeName": "entitytype",
           "AttributeType": "S"
         }],
@@ -109,9 +104,6 @@
         "GlobalSecondaryIndexes": [{
           "IndexName": "identity-index",
           "KeySchema": [{
-            "AttributeName": "identity",
-            "KeyType": "HASH"
-          },{
             "AttributeName": "entitytype",
             "KeyType": "HASH"
           }, {
