@@ -34,12 +34,11 @@ def main():
     # delete
     command="aws cloudformation delete-stack --stack-name apigateway"
     run_command(command)
-    run_command("sleep 5")
+    run_command("sleep 30")
 
     # start by bundling
-    bundle_Command=["./bundle.sh"]
-    c_data=Popen(bundle_Command, shell=True, stdout=PIPE, stderr=PIPE, env=my_env)
-    stdout, stderr = c_data.communicate()
+    command="./bundle.sh"
+    run_command(command)
 
     # upload
     command="aws s3 cp lambda.zip s3://$S3Bucket/lambda.zip"
@@ -72,6 +71,18 @@ def main():
 
     # use the ARN in the template
     command="sed 's/$LambdaArn/"+arn_str+"/g' swagger.json.template > swagger.json"
+    run_command(command)
+
+    command="aws apigateway import-rest-api --fail-on-warnings --body file://swagger.json"
+    stdout, stderr = run_command(command)
+    metadata_struct = json.loads(stdout)
+    ApiId = metadata_struct['id']
+
+    command="aws cloudformation update-stack --stack-name apigateway --template-body file://template.json --capabilities CAPABILITY_IAM --parameters ParameterKey=S3Bucket,UsePreviousValue=true ParameterKey=S3Key,UsePreviousValue=true ParameterKey=ApiId,ParameterValue="+str(ApiId)
+    run_command(command)
+
+    command="aws apigateway create-deployment --rest-api-id "+str(ApiId)+" --stage-name v1"
+    run_command(command)
 
 def run_command(command):
     my_env = os.environ.copy()

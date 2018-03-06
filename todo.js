@@ -12,6 +12,7 @@ function getValue(attribute, type) {
 
 function mapEntityItem(item) {
   return {
+    "uid": item.uid.S,
     "eid": item.eid.N,
     "identity": item.identity.S,
     "entitytype": item.entitytype.S
@@ -201,8 +202,11 @@ exports.postCartEntities = function(event, cb) {
   //}
   var params = {
     "Item": {
+      "uid": {
+        "S": uid
+      },
       "eid": {
-        "N": tid
+          "N": tid.toString()
       },
       "identity": {
         "S": event.body.identity
