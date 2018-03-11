@@ -163,6 +163,7 @@ exports.getCartEntities = function(event, cb) {
   console.log("getCartEntities", JSON.stringify(event));
   var params = {
     "KeyConditionExpression": "entitytype = :entitytype",
+    "IndexName": "identity-index",
     "ExpressionAttributeValues": {
       ":entitytype": {
         "S": event.parameters.entitytype
