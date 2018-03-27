@@ -1,0 +1,439 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Collections Service",
+    "version": "1.0.0"
+  },
+  "basePath": "/collections/v1",
+  "schemes": ["https"],
+  "consumes": ["application/json"],
+  "produces": ["application/json"],
+  "paths": {
+    "/collection": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "collections retrieved",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Collection"
+              }
+            },
+            "headers": {
+              "Link":  {
+                "description": "contains the link to the next page",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "parameters": [{
+          "name": "limit",
+          "in": "query",
+          "description": "result limit",
+          "default": "10",
+          "type": "integer"
+        }, {
+          "name": "next",
+          "in": "query",
+          "description": "use the Link header to get the next page",
+          "type": "string"
+        }],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-HWRP7PM2V73S/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"getCollections\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Link": "'TODO'"
+              },
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')"
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "responses": {
+          "201": {
+            "description": "collection created",
+            "headers": {
+              "Location": {
+                "description": "links to the newly created collection",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "parameters": [{
+          "name": "body",
+          "in": "body",
+          "description": "body object",
+          "required": true,
+          "schema": {
+            "$ref":"#/definitions/CreateCollection"
+          }
+        }],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-HWRP7PM2V73S/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"postCollection\", \"body\": $input.json('$')}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "201",
+              "responseParameters": {
+                "method.response.header.Location": "'TODO'"
+              },
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collection/{collectionId}": {
+      "parameters": [{
+        "name": "collectionId",
+        "in": "path",
+        "description": "ID of collection",
+        "required": true,
+        "default": "",
+        "type": "string"
+      }],
+      "get": {
+        "responses": {
+          "200": {
+            "description": "collection retrieved",
+            "schema": {
+              "$ref": "#/definitions/Collection"
+            }
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-HWRP7PM2V73S/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"getCollection\", \"parameters\": {\"collectionId\": \"$input.params('collectionId')\"}}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')"
+              }
+            }
+          }
+        }
+      },
+      "delete": {
+        "responses": {
+          "204": {
+            "description": "collection deleted"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-HWRP7PM2V73S/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"deleteCollection\", \"parameters\": {\"collectionId\": \"$input.params('collectionId')\"}}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "204",
+              "responseTemplates": {
+                "application/json": "{}"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/collection/{collectionId}/entities": {
+      "parameters": [{
+        "name": "collectionId",
+        "in": "path",
+        "description": "ID of collection",
+        "required": true,
+        "default": "",
+        "type": "string"
+      }],
+      "get": {
+        "responses": {
+          "200": {
+            "description": "entities retrieved",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Entity"
+              }
+            },
+            "headers": {
+              "Link":  {
+                "description": "contains the link to the next page",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "parameters": [{
+          "name": "limit",
+          "in": "query",
+          "description": "result limit",
+          "default": "10",
+          "type": "integer"
+        }, {
+          "name": "next",
+          "in": "query",
+          "description": "use the Link header to get the next page",
+          "type": "string"
+        }],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-HWRP7PM2V73S/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"getEntities\", \"parameters\": {\"collectionId\": \"$input.params('collectionId')\", \"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Link": "'TODO'"
+              },
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "shopping cart retrieved",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Entity"
+              }
+            },
+            "headers": {
+              "Link":  {
+                "description": "contains the link to the next page",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "parameters": [{
+          "name": "limit",
+          "in": "query",
+          "description": "result limit",
+          "default": "10",
+          "type": "integer"
+        }, {
+          "name": "next",
+          "in": "query",
+          "description": "use the Link header to get the next page",
+          "type": "string"
+        }, {
+          "name": "entitytype",
+          "in": "query",
+          "description": "filter the cart contents by this type",
+          "type": "string"
+        }],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-HWRP7PM2V73S/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"getCartEntities\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\", \"entitytype\": \"$input.params('entitytype')\"}}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "200",
+              "responseParameters": {
+                "method.response.header.Link": "'TODO'"
+              },
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')"
+              }
+            }
+          }
+        }
+      }
+    },
+    "/cart/entity": {
+      "post": {
+        "responses": {
+          "201": {
+            "description": "cart entity created",
+            "headers": {
+              "Location": {
+                "description": "links to the newly created cart entity",
+                "type": "string"
+              }
+            }
+          }
+        },
+        "parameters": [{
+          "name": "body",
+          "in": "body",
+          "description": "body object",
+          "required": true,
+          "schema": {
+            "$ref":"#/definitions/CreateCartEntity"
+          }
+        }],
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-HWRP7PM2V73S/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"postCartEntities\", \"body\": $input.json('$')}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "201",
+              "responseParameters": {
+                "method.response.header.Location": "'TODO'"
+              },
+              "responseTemplates": {
+                "application/json": "$input.json('$.body')"
+              }
+            }
+          }
+        }
+      }
+    },"/cart/entity/{entityId}": {
+      "parameters": [{
+        "name": "entityId",
+        "in": "path",
+        "description": "ID of entity in the cart",
+        "required": true,
+        "default": "",
+        "type": "string"
+      }],
+      "delete": {
+        "responses": {
+          "204": {
+            "description": "cart entity deleted"
+          }
+        },
+        "x-amazon-apigateway-integration": {
+          "type": "aws",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-HWRP7PM2V73S/invocations",
+          "httpMethod": "POST",
+          "requestTemplates": {
+            "application/json": "{\"fun\": \"deleteCartEntity\", \"parameters\": {\"entityId\": \"$input.params('entityId')\"}}"
+          },
+          "responses": {
+            "default": {
+              "statusCode": "204",
+              "responseTemplates": {
+                "application/json": "{}"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Entity": {
+      "type": "object",
+      "properties": {
+        "eid": {
+          "type": "integer"
+        },
+        "identity": {
+          "type": "string"
+        },
+        "entitytype": {
+          "type": "string"
+        }
+      },
+      "required": ["eid", "identity", "entitytype"]
+    },
+    "Collection": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string"
+        },
+        "friendlyname": {
+          "type": "string"
+        },
+        "created": {
+          "type": "integer"
+        }
+      },
+      "required": ["uid", "friendlyname", "created"]
+    },
+    "CollectionDetails": {
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string"
+        },
+        "friendlyname": {
+          "type": "string"
+        },
+        "created": {
+          "type": "integer"
+        },
+        "entities": {
+          "type" : "array",
+          "items" : {
+            "$ref": "#/definitions/Entity"
+          }
+        }
+      },
+      "required": ["uid", "friendlyname", "created", "entities"]
+    },
+    "CreateCollection": {
+      "type": "object",
+      "properties": {
+        "friendlyname": {
+          "type": "string"
+        },
+        "created": {
+          "type": "integer"
+        }, "entitiesurl": {
+          "type": "string"
+        }
+      },
+      "required": ["friendlyname", "created", "entitiesurl"]
+    },
+    "CreateCartEntity": {
+      "type": "object",
+      "properties": {
+        "entitytype": {
+          "type": "string"
+        },
+        "eid": {
+          "type": "integer"
+        },
+        "identity": {
+          "type": "string"
+        }
+      },
+      "required": ["entitytype", "eid", "identity"]
+    }
+  }
+}
