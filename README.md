@@ -1,4 +1,6 @@
-# AWS in Action: API Gateway
+# Collections Prototype
+
+This is a prototype for the Collections API to help define functionality needed by the Orange Box in HCA.
 
 The example in this repository reuses the example from chapter 10 in [Amanzon Web Services in Action](https://www.manning.com/books/amazon-web-services-in-action). You can find the code for the original example in the book's [code repository](https://github.com/AWSinAction/code/tree/master/chapter10).
 
