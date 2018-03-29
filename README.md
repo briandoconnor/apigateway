@@ -183,11 +183,11 @@ $> curl -vvv -X DELETE -d '{"entityTimeId": "1522298960490"}' -H "Content-Type: 
 # get cart entries (you should add more than 10 if you want to get a value for the "link" header field for paging purposes)
 $> curl -vvv -X GET "https://$ApiGatewayEndpoint/cart?limit=10&entitytype=project&next=1" -H "accept: application/json"
 # create a collection from the cart
-$> curl -vvv -X POST -d '{"friendlyname": "v1.1.2", "entitiesurl": "https://ttno6ytyc2.execute-api.us-west-2.amazonaws.com/v1/cart?limit=10&entitytype=project&next=1"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/collection
+$> curl -vvv -X POST -d '{"friendlyname": "v1.1.2", "entitiesurl": "https://ixvmwzhael.execute-api.us-west-2.amazonaws.com/v1/cart?limit=10&entitytype=project&next=1"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/collection
 # get the collection back
-$> curl -vvv -X GET "https://$ApiGatewayEndpoint/collection/581f8416-7cb8-4a6f-b71a-95d4b56baf85/entities?limit=10&next=1" -H "accept: application/json"
+$> curl -vvv -X GET "https://$ApiGatewayEndpoint/collection/f477b195-8942-4d56-8d46-ecc7aee4cda9/entities?limit=10&next=1" -H "accept: application/json"
 ```
-LEFT OFF WITH: need to consolidate the /collection entities endpoints into a single endpoint 
+LEFT OFF WITH: need to consolidate the /collection entities endpoints into a single endpoint
 
 ## Teardown
 
