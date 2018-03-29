@@ -3,7 +3,7 @@
   "info": {
     "title": "Collections Service",
     "version": "1.0.0"
-  },
+  }, 
   "basePath": "/collections/v1",
   "schemes": ["https"],
   "consumes": ["application/json"],
