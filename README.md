@@ -187,7 +187,7 @@ $> curl -vvv -X POST -d '{"friendlyname": "v1.1.2", "entitiesurl": "https://ttno
 # get the collection back
 $> curl -vvv -X GET "https://$ApiGatewayEndpoint/collection/581f8416-7cb8-4a6f-b71a-95d4b56baf85/entities?limit=10&next=1" -H "accept: application/json"
 ```
-
+LEFT OFF WITH: need to consolidate the /collection entities endpoints into a single endpoint 
 
 ## Teardown
 
