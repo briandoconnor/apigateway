@@ -462,6 +462,10 @@
          "type": "string"
        }
      ],
+
+
+
+
      "x-amazon-apigateway-integration": {
        "type": "aws",
        "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
