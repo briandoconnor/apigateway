@@ -560,7 +560,7 @@
        }
      }
    },
-   "/text/examples/collection": {
+   "/test/examples/collection": {
      "get": {
        "responses": {
          "200": {
@@ -621,7 +621,7 @@
        }
      }
    },
-   "/text/examples/cart": {
+   "/test/examples/cart": {
      "get": {
        "responses": {
          "200": {
@@ -682,7 +682,7 @@
        }
      }
    },
-   "/text/examples/search": {
+   "/test/examples/search": {
      "get": {
        "responses": {
          "200": {
