@@ -96,13 +96,12 @@ exports.postCollection = function(event, cb) {
   });
   res.on("end", () => {
     body = JSON.parse(body);
-    console.log(`testing: ${body.entities[0].uid} -`);
+    //console.log(`: ${body.entities[0].uid} -`);
     // now loop over the entities and create them
+    var tid = Date.now();
     for (var i=0; i<body.entities.length; i++) {
-      var tid = Date.now();
-      //for (let item of event.body.) {
-      //console.log(item);
-      //}
+      tid++;
+      console.log(`Adding Entity: ${body.entities[i].uid}`);
       var params = {
         "Item": {
           "uid": {
@@ -127,10 +126,11 @@ exports.postCollection = function(event, cb) {
             "S": JSON.stringify(body.entities[i].fragments)
           }
         },
-        "TableName": "collection-entry",
+        "TableName": "collection-entity",
         "ConditionExpression": "attribute_not_exists(eid)"
       };
       db.putItem(params, function(err) {
+        console.log(`Adding Entity: ${params.Item.uid}`);
         if (err) {
           cb(err);
         } else {

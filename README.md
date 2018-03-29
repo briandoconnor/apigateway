@@ -183,7 +183,7 @@ $> curl -vvv -X DELETE -d '{"entityTimeId": "1522298960490"}' -H "Content-Type: 
 # get cart entries (you should add more than 10 if you want to get a value for the "link" header field for paging purposes)
 $> curl -vvv -X GET "https://$ApiGatewayEndpoint/cart?limit=10&entitytype=project&next=1" -H "accept: application/json"
 # create a collection from the cart
-$> curl -vvv -X POST -d '{"friendlyname": "v1.1.2", "entitiesurl": "https://rm8qv9k46d.execute-api.us-west-2.amazonaws.com/v1/cart?limit=10&entitytype=project&next=1"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/collection
+$> curl -vvv -X POST -d '{"friendlyname": "v1.1.2", "entitiesurl": "https://s9wh37dzch.execute-api.us-west-2.amazonaws.com/v1/cart?limit=10&entitytype=project&next=1"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/collection
 ```
 
 
