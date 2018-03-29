@@ -268,7 +268,7 @@
             "default": {
               "statusCode": "200",
               "responseParameters": {
-                "method.response.header.Link": "$input.json('$.headers.next')"
+                "method.response.header.Link": "integration.response.body.headers.next"
               },
               "responseTemplates": {
                 "application/json": "$input.json('$.body')"
@@ -544,7 +544,7 @@
           "type": "string"
         }
       },
-      "required": ["friendlyname", "created", "entitiesurl"]
+      "required": ["friendlyname", "entitiesurl"]
     },
     "CreateCartEntity": {
       "type": "object",

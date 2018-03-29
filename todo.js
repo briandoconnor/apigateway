@@ -2,6 +2,7 @@ var moment = require('moment');
 var uuid = require('node-uuid');
 var AWS = require('aws-sdk');
 var db = new AWS.DynamoDB();
+const https = require("https");
 
 function getValue(attribute, type) {
   if (attribute === undefined) {
@@ -83,7 +84,62 @@ exports.postCollection = function(event, cb) {
       cb(null, {"headers": {"uid": uid}, "body": mapCollectionItem(params.Item)});
     }
   });
-  // TODO: need to make some bundles here
+  // add entitites from the URL
+  // read the collection from the URL
+  // TODO: support paging
+  var url = event.body.entitiesurl;
+  https.get(url, res => {
+  res.setEncoding("utf8");
+  let body = "";
+  res.on("data", data => {
+    body += data;
+  });
+  res.on("end", () => {
+    body = JSON.parse(body);
+    console.log(`testing: ${body.entities[0].uid} -`);
+    // now loop over the entities and create them
+    for (var i=0; i<body.entities.length; i++) {
+      var tid = Date.now();
+      //for (let item of event.body.) {
+      //console.log(item);
+      //}
+      var params = {
+        "Item": {
+          "uid": {
+            "S": uid
+          },
+          "eid": {
+              "N": tid.toString()
+          },
+          "entitytype": {
+            "S": body.entities[i].entitytype
+          },
+          "identity": {
+            "S": body.entities[i].identity
+          },
+          "version": {
+            "S": body.entities[i].version
+          },
+          "keyvalues": {
+            "S": JSON.stringify(body.entities[i].keyvalues)
+          },
+          "fragments": {
+            "S": JSON.stringify(body.entities[i].fragments)
+          }
+        },
+        "TableName": "collection-entry",
+        "ConditionExpression": "attribute_not_exists(eid)"
+      };
+      db.putItem(params, function(err) {
+        if (err) {
+          cb(err);
+        } else {
+          cb(null, {"headers": {"uid": uid}, "body": mapEntityItem(params.Item)});
+        }
+      });
+    }
+    });
+  });
 };
 
 exports.getCollection = function(event, cb) {
@@ -91,7 +147,7 @@ exports.getCollection = function(event, cb) {
   var params = {
     "Key": {
       "uid": {
-        "S": event.parameters.releaseId
+        "S": event.parameters.collectionId
       }
     },
     "TableName": "collection-collection"
@@ -102,10 +158,12 @@ exports.getCollection = function(event, cb) {
     } else {
       if (data.Item) {
         cb(null, {"body": mapCollectionItem(data.Item)});
+        // TODO: need to retrieve the entitites
       } else {
         cb(new Error('not found'));
       }
     }
+    // probably need to merge with /collection/{collectionId}/entities
   });
 };
 
@@ -128,13 +186,14 @@ exports.deleteCollection = function(event, cb) {
   });
 };
 
+// this probably should be merged with /collection/{collectionId} and then go away
 exports.getEntities = function(event, cb) {
   console.log("getEntities", JSON.stringify(event));
   var params = {
     "KeyConditionExpression": "uid = :uid",
     "ExpressionAttributeValues": {
       ":uid": {
-        "S": event.parameters.releaseId
+        "S": event.parameters.collectionId
       }
     },
     "TableName": "collection-entity",

@@ -180,10 +180,10 @@ $> export ApiGatewayEndpoint="$ApiId.execute-api.us-west-2.amazonaws.com/v1"
 $> curl -vvv -X POST -d '{"entitytype": "project", "eid": 1, "identity": "Foo", "version": "123", "keyvalues": {"key1": "value1"}, "fragments": ["json-ld pointer"]}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/cart/entity
 # delete a cart entry (for this implementation you need both keys, hence the awkward delete doc here)
 $> curl -vvv -X DELETE -d '{"entityTimeId": "1522298960490"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/cart/entity/746057ad-207c-4d5f-9f7c-210170e771ee
-# get cart entries
-$> curl -vvv -X GET "https://$ApiGatewayEndpoint/cart?limit=10&entitytype=project" -H "accept: application/json"
+# get cart entries (you should add more than 10 if you want to get a value for the "link" header field for paging purposes)
+$> curl -vvv -X GET "https://$ApiGatewayEndpoint/cart?limit=10&entitytype=project&next=1" -H "accept: application/json"
 # create a collection from the cart
-$> curl -vvv -X POST -d '{"friendlyname": "v1.1.2", "created": 1}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/collection
+$> curl -vvv -X POST -d '{"friendlyname": "v1.1.2", "entitiesurl": "https://rm8qv9k46d.execute-api.us-west-2.amazonaws.com/v1/cart?limit=10&entitytype=project&next=1"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/collection
 ```
 
 
@@ -217,3 +217,4 @@ $ aws s3 rb --force s3://$S3Bucket
 * corresponding lookups in the core DSS API based on release
 * supporting TSV manifest for release creation (not JSON)
 * ability to have extra fields in the manifest
+* redirect: "method.response.header.Location": "integration.response.body.redirect.url"
