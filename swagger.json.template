@@ -435,11 +435,11 @@
          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
          "httpMethod": "POST",
          "requestTemplates": {
-           "application/json": "{\"fun\": \"getCollections\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
+           "application/json": "{\"fun\": \"postCartEntities\", \"body\": $input.json('$')}"
          },
          "responses": {
            "default": {
-             "statusCode": "200",
+             "statusCode": "201",
              "responseParameters": {
                "method.response.header.Link": "'TODO'"
              },
@@ -462,29 +462,6 @@
          "type": "string"
        }
      ],
-
-
-
-
-     "x-amazon-apigateway-integration": {
-       "type": "aws",
-       "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
-       "httpMethod": "POST",
-       "requestTemplates": {
-         "application/json": "{\"fun\": \"getCollections\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
-       },
-       "responses": {
-         "default": {
-           "statusCode": "200",
-           "responseParameters": {
-             "method.response.header.Link": "'TODO'"
-           },
-           "responseTemplates": {
-             "application/json": "$input.json('$.body')"
-           }
-         }
-       }
-     },
      "get": {
        "responses": {
          "200": {
@@ -493,12 +470,47 @@
              "$ref": "#/definitions/Portal"
            }
          }
+       },
+       "x-amazon-apigateway-integration": {
+         "type": "aws",
+         "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+         "httpMethod": "POST",
+         "requestTemplates": {
+           "application/json": "{\"fun\": \"getCollections\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
+         },
+         "responses": {
+           "default": {
+             "statusCode": "200",
+             "responseParameters": {
+               "method.response.header.Link": "'TODO'"
+             },
+             "responseTemplates": {
+               "application/json": "$input.json('$.body')"
+             }
+           }
+         }
        }
      },
      "delete": {
        "responses": {
          "204": {
            "description": "portal deleted"
+         }
+       },
+       "x-amazon-apigateway-integration": {
+         "type": "aws",
+         "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
+         "httpMethod": "POST",
+         "requestTemplates": {
+           "application/json": "{\"fun\": \"deleteCartEntity\", \"parameters\": {\"entityId\": \"$input.params('entityId')\"}}"
+         },
+         "responses": {
+           "default": {
+             "statusCode": "204",
+             "responseTemplates": {
+               "application/json": "{}"
+             }
+           }
          }
        }
      }
@@ -584,25 +596,6 @@
          }
        },
        "parameters": [
-         {
-           "name": "limit",
-           "in": "query",
-           "description": "result limit",
-           "default": "10",
-           "type": "integer"
-         },
-         {
-           "name": "next",
-           "in": "query",
-           "description": "use the Link header to get the next page",
-           "type": "string"
-         },
-         {
-           "name": "entitytype",
-           "in": "query",
-           "description": "filter the cart contents by this type",
-           "type": "string"
-         }
        ],
        "x-amazon-apigateway-integration": {
          "type": "aws",
@@ -645,25 +638,6 @@
          }
        },
        "parameters": [
-         {
-           "name": "limit",
-           "in": "query",
-           "description": "result limit",
-           "default": "10",
-           "type": "integer"
-         },
-         {
-           "name": "next",
-           "in": "query",
-           "description": "use the Link header to get the next page",
-           "type": "string"
-         },
-         {
-           "name": "entitytype",
-           "in": "query",
-           "description": "filter the cart contents by this type",
-           "type": "string"
-         }
        ],
        "x-amazon-apigateway-integration": {
          "type": "aws",
@@ -706,25 +680,6 @@
          }
        },
        "parameters": [
-         {
-           "name": "limit",
-           "in": "query",
-           "description": "result limit",
-           "default": "10",
-           "type": "integer"
-         },
-         {
-           "name": "next",
-           "in": "query",
-           "description": "use the Link header to get the next page",
-           "type": "string"
-         },
-         {
-           "name": "entitytype",
-           "in": "query",
-           "description": "filter the cart contents by this type",
-           "type": "string"
-         }
        ],
        "x-amazon-apigateway-integration": {
          "type": "aws",
