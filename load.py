@@ -42,19 +42,11 @@ def main():
 
     # upload
     command="aws s3 cp lambda.zip s3://$S3Bucket/lambda.zip"
-    print("COMMAND: "+str(command))
-    c_data=Popen(command, shell=True, stdout=PIPE, stderr=PIPE, env=my_env)
-    stdout, stderr = c_data.communicate()
-    print("STDOUT: "+str(stdout))
-    print("STDERR: "+str(stderr))
+    run_command(command)
 
     # create stack
     command="aws cloudformation create-stack --stack-name apigateway --template-body file://template.json --capabilities CAPABILITY_IAM --parameters ParameterKey=S3Bucket,ParameterValue=$S3Bucket"
-    print("COMMAND: "+str(command))
-    c_data=Popen(command, shell=True, stdout=PIPE, stderr=PIPE, env=my_env)
-    stdout, stderr = c_data.communicate()
-    print("STDOUT: "+str(stdout))
-    print("STDERR: "+str(stderr))
+    run_command(command)
 
     # wait for stack
     command="aws cloudformation wait stack-create-complete --stack-name apigateway"
@@ -64,9 +56,7 @@ def main():
     command="aws cloudformation describe-stacks --stack-name apigateway --query Stacks[0].Outputs"
     stdout, stderr = run_command(command)
     metadata_struct = json.loads(stdout)
-    print ("INFO: "+str(metadata_struct))
-    print ("INFO: "+str(metadata_struct[0]))
-    print ("INFO: "+str(metadata_struct[0]['OutputValue']))
+    print ("ARN INFO: "+str(metadata_struct[0]['OutputValue']))
     arn_str = str(metadata_struct[0]['OutputValue'])
 
     # use the ARN in the template

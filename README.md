@@ -29,114 +29,11 @@ And follow the rest of the directions...
 
 ## Setup
 
-You have multiple options to setup the example:
+I've wrapped the whole process in a simple python script to automate deployment.  Just run with:
 
-1. Using the [Serverless Framework](http://serverless.com/)
-2. Using CloudFormation
-3. Using CloudFormation, [Swagger / OpenAPI Specification](https://openapis.org/specification) and the AWS CLI
-4. Deprecated: ~~Using CloudFormation, [Swagger / OpenAPI Specification](https://openapis.org/specification) and the [Amazon API Gateway Importer](https://github.com/awslabs/aws-apigateway-importer)~~
+    $> python load.py
 
-### Using the Serverless Framework
-
-clone this repository
-
-```
-$ git clone git@github.com:AWSinAction/apigateway.git
-$ cd apigateway/
-```
-
-install the Serverless Framework
-
-```
-$ npm install -g serverless@1.0.0-rc.1
-```
-
-switch to the `serverless-framework` folder and install the dependencies
-
-```
-$ cd serverless-framework/
-$ npm install --production
-```
-
-deploy the API
-
-```
-$ serverless deploy
-[...]
-Service Information
-[...]
-endpoints:
-  GET - https://$ApiId.execute-api.us-east-1.amazonaws.com/dev/category/{category}/task
-  PUT - https://$ApiId.execute-api.us-east-1.amazonaws.com/dev/user/{userId}/task/{taskId}
-  DELETE - https://$ApiId.execute-api.us-east-1.amazonaws.com/dev/user/{userId}/task/{taskId}
-  GET - https://$ApiId.execute-api.us-east-1.amazonaws.com/dev/user/{userId}/task
-  POST - https://$ApiId.execute-api.us-east-1.amazonaws.com/dev/user/{userId}/task
-  GET - https://$ApiId.execute-api.us-east-1.amazonaws.com/dev/user/{userId}
-  DELETE - https://$ApiId.execute-api.us-east-1.amazonaws.com/dev/user/{userId}
-  GET - https://$ApiId.execute-api.us-east-1.amazonaws.com/dev/user
-  POST - https://$ApiId.execute-api.us-east-1.amazonaws.com/dev/user
-functions:
-[...]
-```
-
-export the API endpoint from above in a environment variable to easily make calls the the API next.
-
-```
-export ApiGatewayEndpoint=" https://$ApiId.execute-api.us-east-1.amazonaws.com/dev"
-```
-
-and now [use the RESTful API](#use-the-restful-api).
-
-### Using CloudFormation
-
-clone this repository
-
-```
-$ git clone git@github.com:AWSinAction/apigateway.git
-$ cd apigateway/
-```
-
-create the lambda code file (`lambda.zip`)
-
-```
-$ npm install --production
-$ ./bundle.sh
-```
-
-create an S3 bucket in the US East (N. Virginia, `us-east-1`) region and upload the `lambda.zip` file (replace `$S3Bucket` with a S3 bucket name)
-
-```
-$ export AWS_DEFAULT_REGION=us-east-1
-$ export S3Bucket=$(whoami)-apigateway
-$ aws s3 mb s3://$S3Bucket
-$ aws s3 cp lambda.zip s3://$S3Bucket/lambda.zip
-```
-
-create cloudformation stack (replace `$S3Bucket` with your S3 bucket name)
-
-```
-$ aws cloudformation create-stack --stack-name apigateway --template-body file://template_with_api.json --capabilities CAPABILITY_IAM --parameters ParameterKey=S3Bucket,ParameterValue=$S3Bucket
-```
-
-wait until the stack is created (`CREATE_COMPLETE`)
-
-```
-$ aws cloudformation wait stack-create-complete --stack-name apigateway
-```
-
-get the `$ApiId`
-
-```
-$ aws cloudformation describe-stacks --stack-name apigateway --query Stacks[0].Outputs
-```
-
-set the `$ApiGatewayEndpoint` environment variable (replace `$ApiId`)
-
-```
-export ApiGatewayEndpoint="$ApiId.execute-api.us-east-1.amazonaws.com/v1"
-```
-
-and now [use the RESTful API](#use-the-restful-api).
+For more details on what this script is doing, see the details below.
 
 ### Using CloudFormation, Swagger / OpenAPI Specification and the AWS CLI
 
@@ -273,7 +170,7 @@ list tasks by category
 curl -vvv -X GET https://$ApiGatewayEndpoint/category/$Category/task
 ```
 
-### Collection Testing Examples 
+### Collection Testing Examples
 
 ```
 export ApiGatewayEndpoint="$ApiId.execute-api.us-west-2.amazonaws.com/v1"
