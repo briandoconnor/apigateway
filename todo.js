@@ -213,7 +213,7 @@ exports.postCartEntities = function(event, cb) {
         "S": event.body.identity
       },
       "entitytype": {
-        "S": event.body.entitytype
+        "S": JSON.stringify(event.body.entitytype)
       }
     },
     "TableName": "collection-cart-entities",

@@ -36,6 +36,10 @@ def main():
     run_command(command)
     run_command("sleep 30")
 
+    # download deps
+    command="npm install --production"
+    run_command(command)
+
     # start by bundling
     command="./bundle.sh"
     run_command(command)

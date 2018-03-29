@@ -173,12 +173,14 @@ curl -vvv -X GET https://$ApiGatewayEndpoint/category/$Category/task
 ### Collection Testing Examples
 
 ```
-export ApiGatewayEndpoint="$ApiId.execute-api.us-west-2.amazonaws.com/v1"
-curl -vvv -X POST -d '{"friendlyname": "v1.1.2", "created": 1}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/collection
+$> export ApiId=hj50wnu39m
+$> export ApiGatewayEndpoint="$ApiId.execute-api.us-west-2.amazonaws.com/v1"
 # create a cart entry
-curl -vvv -X POST -d '{"entitytype": "project", "eid": 1, "identity": "Foo"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/cart/entity
+$> curl -vvv -X POST -d '{"entitytype": "project", "eid": 1, "identity": "Foo"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/cart/entity
 # get cart entries
-curl -vvv -X GET "https://$ApiGatewayEndpoint/cart?limit=10&entitytype=project" -H "accept: application/json"
+$> curl -vvv -X GET "https://$ApiGatewayEndpoint/cart?limit=10&entitytype=project" -H "accept: application/json"
+# create a collection from the cart
+$> curl -vvv -X POST -d '{"friendlyname": "v1.1.2", "created": 1}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/collection
 ```
 
 
