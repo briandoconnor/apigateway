@@ -120,56 +120,6 @@ and now [use the RESTful API](#use-the-restful-api).
 
 ## Use the RESTful API
 
-the following examples assume that you replace `$ApiGatewayEndpoint` with `$ApiId.execute-api.us-east-1.amazonaws.com`
-
-create a user
-
-```
-curl -vvv -X POST -d '{"email": "your@mail.com", "phone": "0123456789"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/user
-```
-
-list users
-
-```
-curl -vvv -X GET https://$ApiGatewayEndpoint/user
-```
-
-create a task
-
-```
-curl -vvv -X POST -d '{"description": "test task"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/user/$UserId/task
-```
-
-list tasks
-
-```
-curl -vvv -X GET https://$ApiGatewayEndpoint/user/$UserId/task
-```
-
-mark task as complete
-
-```
-curl -vvv -X PUT https://$ApiGatewayEndpoint/user/$UserId/task/$TaskId
-```
-
-delete task
-
-```
-curl -vvv -X DELETE https://$ApiGatewayEndpoint/user/$UserId/task/$TaskId
-```
-
-create a task with a category
-
-```
-curl -vvv -X POST -d '{"description": "test task", "category": "test"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/user/$UserId/task
-```
-
-list tasks by category
-
-```
-curl -vvv -X GET https://$ApiGatewayEndpoint/category/$Category/task
-```
-
 ### Collection Testing Examples
 
 ```
