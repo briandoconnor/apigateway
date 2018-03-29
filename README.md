@@ -173,10 +173,13 @@ curl -vvv -X GET https://$ApiGatewayEndpoint/category/$Category/task
 ### Collection Testing Examples
 
 ```
+# you need to fillin the ApiID based on the output from the load script!
 $> export ApiId=hj50wnu39m
 $> export ApiGatewayEndpoint="$ApiId.execute-api.us-west-2.amazonaws.com/v1"
-# create a cart entry
-$> curl -vvv -X POST -d '{"entitytype": "project", "eid": 1, "identity": "Foo"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/cart/entity
+# create a shopping cart entry
+$> curl -vvv -X POST -d '{"entitytype": "project", "eid": 1, "identity": "Foo", "version": "123", "keyvalues": {"key1": "value1"}, "fragments": ["json-ld pointer"]}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/cart/entity
+# delete a cart entry (for this implementation you need both keys, hence the awkward delete doc here)
+$> curl -vvv -X DELETE -d '{"entityTimeId": "1522298960490"}' -H "Content-Type: application/json" https://$ApiGatewayEndpoint/cart/entity/746057ad-207c-4d5f-9f7c-210170e771ee
 # get cart entries
 $> curl -vvv -X GET "https://$ApiGatewayEndpoint/cart?limit=10&entitytype=project" -H "accept: application/json"
 # create a collection from the cart

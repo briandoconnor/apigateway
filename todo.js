@@ -15,6 +15,9 @@ function mapEntityItem(item) {
     "uid": item.uid.S,
     "eid": item.eid.N,
     "identity": item.identity.S,
+    "version": item.version.S,
+    "fragments": JSON.parse(item.fragments.S),
+    "keyvalues": JSON.parse(item.keyvalues.S),
     "entitytype": item.entitytype.S
   };
 }
@@ -184,7 +187,12 @@ exports.getCartEntities = function(event, cb) {
       cb(err);
     } else {
       var res = {
-        "body": data.Items.map(mapEntityItem)
+        "body": {
+          "uid": uuid.v4(),
+          "friendlyname": "shopping cart",
+          "created": Date.now().toString(),
+          "entities": data.Items.map(mapEntityItem)
+        }
       };
       if (data.LastEvaluatedKey !== undefined) {
         res.headers = {"next": data.LastEvaluatedKey.eid.N};
@@ -209,11 +217,20 @@ exports.postCartEntities = function(event, cb) {
       "eid": {
           "N": tid.toString()
       },
+      "entitytype": {
+        "S": event.body.entitytype
+      },
       "identity": {
         "S": event.body.identity
       },
-      "entitytype": {
-        "S": JSON.stringify(event.body.entitytype)
+      "version": {
+        "S": event.body.version
+      },
+      "keyvalues": {
+        "S": JSON.stringify(event.body.keyvalues)
+      },
+      "fragments": {
+        "S": JSON.stringify(event.body.fragments)
       }
     },
     "TableName": "collection-cart-entities",
@@ -224,6 +241,28 @@ exports.postCartEntities = function(event, cb) {
       cb(err);
     } else {
       cb(null, {"headers": {"uid": uid}, "body": mapEntityItem(params.Item)});
+    }
+  });
+};
+
+exports.deleteCartEntity = function(event, cb) {
+  console.log("deleteCartEntity", JSON.stringify(event));
+  var params = {
+    "Key": {
+      "uid": {
+        "S": event.parameters.entityId
+      },
+      "eid": {
+        "N": event.body.entityTimeId
+      }
+    },
+    "TableName": "collection-cart-entities"
+  };
+  db.deleteItem(params, function(err) {
+    if (err) {
+      cb(err);
+    } else {
+      cb();
     }
   });
 };

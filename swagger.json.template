@@ -3,7 +3,7 @@
   "info": {
     "title": "Collections Service",
     "version": "1.0.0"
-  }, 
+  },
   "basePath": "/collections/v1",
   "schemes": ["https"],
   "consumes": ["application/json"],
@@ -268,7 +268,7 @@
             "default": {
               "statusCode": "200",
               "responseParameters": {
-                "method.response.header.Link": "'TODO'"
+                "method.response.header.Link": "$input.json('$.headers.next')"
               },
               "responseTemplates": {
                 "application/json": "$input.json('$.body')"
@@ -340,7 +340,7 @@
           "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/$LambdaArn/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
-            "application/json": "{\"fun\": \"deleteCartEntity\", \"parameters\": {\"entityId\": \"$input.params('entityId')\"}}"
+            "application/json": "{\"fun\": \"deleteCartEntity\", \"body\": $input.json('$'), \"parameters\": {\"entityId\": \"$input.params('entityId')\"}}"
           },
           "responses": {
             "default": {
@@ -549,14 +549,26 @@
     "CreateCartEntity": {
       "type": "object",
       "properties": {
-        "entitytype": {
-          "type": "string"
-        },
         "eid": {
           "type": "integer"
         },
+        "entitytype": {
+          "type": "string"
+        },
         "identity": {
           "type": "string"
+        },
+        "version": {
+          "type": "string"
+        },
+        "keyvalues" : {
+          "type": "object"
+        },
+        "fragments" : {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
         }
       },
       "required": ["entitytype", "eid", "identity"]
