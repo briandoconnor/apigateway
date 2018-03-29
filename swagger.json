@@ -42,7 +42,7 @@
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-NWDX9A3HHMYJ/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"getCollections\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
@@ -83,7 +83,7 @@
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-NWDX9A3HHMYJ/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"postCollection\", \"body\": $input.json('$')}"
@@ -122,7 +122,7 @@
         },
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-NWDX9A3HHMYJ/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"getCollection\", \"parameters\": {\"collectionId\": \"$input.params('collectionId')\"}}"
@@ -145,7 +145,7 @@
         },
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-NWDX9A3HHMYJ/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"deleteCollection\", \"parameters\": {\"collectionId\": \"$input.params('collectionId')\"}}"
@@ -202,7 +202,7 @@
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-NWDX9A3HHMYJ/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"getEntities\", \"parameters\": {\"collectionId\": \"$input.params('collectionId')\", \"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
@@ -259,7 +259,7 @@
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-NWDX9A3HHMYJ/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"getCartEntities\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\", \"entitytype\": \"$input.params('entitytype')\"}}"
@@ -302,7 +302,7 @@
         }],
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-NWDX9A3HHMYJ/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"postCartEntities\", \"body\": $input.json('$')}"
@@ -337,7 +337,7 @@
         },
         "x-amazon-apigateway-integration": {
           "type": "aws",
-          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-NWDX9A3HHMYJ/invocations",
+          "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
           "httpMethod": "POST",
           "requestTemplates": {
             "application/json": "{\"fun\": \"deleteCartEntity\", \"parameters\": {\"entityId\": \"$input.params('entityId')\"}}"
@@ -386,7 +386,26 @@
            "description": "use the Link header to get the next page",
            "type": "string"
          }
-       ]
+       ],
+       "x-amazon-apigateway-integration": {
+         "type": "aws",
+         "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
+         "httpMethod": "POST",
+         "requestTemplates": {
+           "application/json": "{\"fun\": \"getCollections\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
+         },
+         "responses": {
+           "default": {
+             "statusCode": "200",
+             "responseParameters": {
+               "method.response.header.Link": "'TODO'"
+             },
+             "responseTemplates": {
+               "application/json": "$input.json('$.body')"
+             }
+           }
+         }
+       }
      },
      "post": {
        "responses": {
@@ -410,7 +429,26 @@
              "$ref": "#/definitions/CreatePortal"
            }
          }
-       ]
+       ],
+       "x-amazon-apigateway-integration": {
+         "type": "aws",
+         "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
+         "httpMethod": "POST",
+         "requestTemplates": {
+           "application/json": "{\"fun\": \"getCollections\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
+         },
+         "responses": {
+           "default": {
+             "statusCode": "200",
+             "responseParameters": {
+               "method.response.header.Link": "'TODO'"
+             },
+             "responseTemplates": {
+               "application/json": "$input.json('$.body')"
+             }
+           }
+         }
+       }
      }
    },
    "/handoff/portal/{portalId}": {
@@ -424,6 +462,25 @@
          "type": "string"
        }
      ],
+     "x-amazon-apigateway-integration": {
+       "type": "aws",
+       "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
+       "httpMethod": "POST",
+       "requestTemplates": {
+         "application/json": "{\"fun\": \"getCollections\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
+       },
+       "responses": {
+         "default": {
+           "statusCode": "200",
+           "responseParameters": {
+             "method.response.header.Link": "'TODO'"
+           },
+           "responseTemplates": {
+             "application/json": "$input.json('$.body')"
+           }
+         }
+       }
+     },
      "get": {
        "responses": {
          "200": {
@@ -481,7 +538,209 @@
            "description": "filter the cart contents by this type",
            "type": "string"
          }
-       ]
+       ],
+       "x-amazon-apigateway-integration": {
+         "type": "aws",
+         "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
+         "httpMethod": "POST",
+         "requestTemplates": {
+           "application/json": "{\"fun\": \"getCollections\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
+         },
+         "responses": {
+           "default": {
+             "statusCode": "200",
+             "responseParameters": {
+               "method.response.header.Link": "'TODO'"
+             },
+             "responseTemplates": {
+               "application/json": "$input.json('$.body')"
+             }
+           }
+         }
+       }
+     }
+   },
+   "/test/examples/collection": {
+     "get": {
+       "responses": {
+         "200": {
+           "description": "return a test collection",
+           "schema": {
+             "type": "array",
+             "items": {
+               "$ref": "#/definitions/Entity"
+             }
+           },
+           "headers": {
+             "Link": {
+               "description": "contains the link to the next page",
+               "type": "string"
+             }
+           }
+         }
+       },
+       "parameters": [
+         {
+           "name": "limit",
+           "in": "query",
+           "description": "result limit",
+           "default": "10",
+           "type": "integer"
+         },
+         {
+           "name": "next",
+           "in": "query",
+           "description": "use the Link header to get the next page",
+           "type": "string"
+         },
+         {
+           "name": "entitytype",
+           "in": "query",
+           "description": "filter the cart contents by this type",
+           "type": "string"
+         }
+       ],
+       "x-amazon-apigateway-integration": {
+         "type": "aws",
+         "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
+         "httpMethod": "POST",
+         "requestTemplates": {
+           "application/json": "{\"fun\": \"getCollections\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
+         },
+         "responses": {
+           "default": {
+             "statusCode": "200",
+             "responseParameters": {
+               "method.response.header.Link": "'TODO'"
+             },
+             "responseTemplates": {
+               "application/json": "$input.json('$.body')"
+             }
+           }
+         }
+       }
+     }
+   },
+   "/test/examples/cart": {
+     "get": {
+       "responses": {
+         "200": {
+           "description": "return a test cart",
+           "schema": {
+             "type": "array",
+             "items": {
+               "$ref": "#/definitions/Entity"
+             }
+           },
+           "headers": {
+             "Link": {
+               "description": "contains the link to the next page",
+               "type": "string"
+             }
+           }
+         }
+       },
+       "parameters": [
+         {
+           "name": "limit",
+           "in": "query",
+           "description": "result limit",
+           "default": "10",
+           "type": "integer"
+         },
+         {
+           "name": "next",
+           "in": "query",
+           "description": "use the Link header to get the next page",
+           "type": "string"
+         },
+         {
+           "name": "entitytype",
+           "in": "query",
+           "description": "filter the cart contents by this type",
+           "type": "string"
+         }
+       ],
+       "x-amazon-apigateway-integration": {
+         "type": "aws",
+         "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
+         "httpMethod": "POST",
+         "requestTemplates": {
+           "application/json": "{\"fun\": \"getCollections\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
+         },
+         "responses": {
+           "default": {
+             "statusCode": "200",
+             "responseParameters": {
+               "method.response.header.Link": "'TODO'"
+             },
+             "responseTemplates": {
+               "application/json": "$input.json('$.body')"
+             }
+           }
+         }
+       }
+     }
+   },
+   "/test/examples/search": {
+     "get": {
+       "responses": {
+         "200": {
+           "description": "return a test search result",
+           "schema": {
+             "type": "array",
+             "items": {
+               "$ref": "#/definitions/Entity"
+             }
+           },
+           "headers": {
+             "Link": {
+               "description": "contains the link to the next page",
+               "type": "string"
+             }
+           }
+         }
+       },
+       "parameters": [
+         {
+           "name": "limit",
+           "in": "query",
+           "description": "result limit",
+           "default": "10",
+           "type": "integer"
+         },
+         {
+           "name": "next",
+           "in": "query",
+           "description": "use the Link header to get the next page",
+           "type": "string"
+         },
+         {
+           "name": "entitytype",
+           "in": "query",
+           "description": "filter the cart contents by this type",
+           "type": "string"
+         }
+       ],
+       "x-amazon-apigateway-integration": {
+         "type": "aws",
+         "uri": "arn:aws:apigateway:us-west-2:lambda:path/2015-03-31/functions/arn:aws:lambda:us-west-2:719818754276:function:apigateway-Lambda-1AP4AMH4TJ6HJ/invocations",
+         "httpMethod": "POST",
+         "requestTemplates": {
+           "application/json": "{\"fun\": \"getCollections\", \"parameters\": {\"limit\": \"$input.params('limit')\", \"next\": \"$input.params('next')\"}}"
+         },
+         "responses": {
+           "default": {
+             "statusCode": "200",
+             "responseParameters": {
+               "method.response.header.Link": "'TODO'"
+             },
+             "responseTemplates": {
+               "application/json": "$input.json('$.body')"
+             }
+           }
+         }
+       }
      }
    }
   },
